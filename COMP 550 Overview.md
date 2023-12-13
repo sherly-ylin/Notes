@@ -1,9 +1,14 @@
-COMP 550 Ch3-6
+### Content
 
 - [2. Basic Graph](#2-basic-graph)
 	- [2.1 BFS](#21-bfs)
 	- [2.2 DFS](#22-dfs)
 	- [2.3 MST](#23-mst)
+		- [Cut Property](#cut-property)
+		- [Cycle Property](#cycle-property)
+		- [Prim's](#prims)
+		- [Kruskal's](#kruskals)
+		- [Reverse-Delete](#reverse-delete)
 - [3. Greedy](#3-greedy)
 	- [3.1 Compatible Intervals](#31-compatible-intervals)
 	- [3.2 Fractional Knapsack](#32-fractional-knapsack)
@@ -36,15 +41,47 @@ COMP 550 Ch3-6
 
 ## 2.1 BFS 
 
+
+Runtime: O(m+n)
+
 ## 2.2 DFS 
+Pre- and Post- lists
+- Set pre value when first visit the vertex
+- Set post value when all its children visited and back to it
+
+
+Runtime: O(m+n)
 
 ## 2.3 MST
-Minimum Spanning Tree
+> **Minimum Spanning Tree**
+> - has exactly n-1 edges(w(e)>0), mininum total weight
+> - adding any additional cycle will result in cycle
+> - 
+
+### Cut Property
+- For any S = subset of V (a cut)
+- The lightest edge crossing S is in MST
+
+### Cycle Property
+- For any cycle C in G, the heaviest edge in C is not in MST
+
+### Prim's
+- Choose any vertex s, let S = {s}, F = ø
+- Add the lightest edge crossing S to F (Repeat n-1 times)
+### Kruskal's
+- Sort edges in **increasing** weight
+- for each edge e: add e to F if (V,FU{e}) has no cycle
+### Reverse-Delete
+- Sort edges in **decreasing** order, let F = E
+- for each edge e: remove e if (V,F-{e}) still connected
+
+
 
 # 3. Greedy
 
 ## 3.1 Compatible Intervals 
 **Input**: array of intervals {[s1,t1],...,[sn,tn]}
+
 **Goal**: OPT = max subset of compatible intervals
 **Idea**: keep picking the interval with the earliest endtime
 
