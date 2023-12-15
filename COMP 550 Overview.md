@@ -217,7 +217,7 @@ Runtime: O(m+n)
 	Goal: find the shortest paths from s to v for all other vertices 
 			(this ALG returns the distance)
 ```
-    >DP version:
+>DP version:
 	[1] OPT[v] = dist from s to v
 	[2] OPT[s] = 0
 		OPT[v] = min(OPT[v], OPT[u]+l(u,v)), (u,v) is an edge, ie, u is in-neighbor

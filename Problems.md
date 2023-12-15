@@ -6,6 +6,30 @@
 - [Graph](#graph)
 - [Flow](#flow)
 
+
+
+# Array
+Two-Pointer
+---
+**#905 Array By Parity**
+- Input: array A 
+- Goal: sort A s.t. even numbers come before odd numbers
+```
+two pointers i=1, j=n
+while i<j:  # 4 cases
+    (1) A[i] = even & A[j] = even: i++
+    (2) A[i] = even & A[j] = odd: i++, j--
+    (3) A[i] = odd & A[j] = even: swap A[i], A[j], i++, j--
+    (4) A[i] = odd & A[j] = odd: j--
+```
+---
+**#344 Reverse String**
+
+**#349 Intersection of Two Arrays**
+
+**#977 Squares of a Sorted Array**
+
+
 # DP
 
 ## LIS类
@@ -94,27 +118,7 @@ for j = 2,...,n:
 **SCI Max Reward II**
 
 
-# Array
 
-Two-Pointer
----
-**#905 Array By Parity**
-- Input: array A 
-- Goal: sort A s.t. even numbers come before odd numbers
-```
-two pointers i=1, j=n
-while i<j:  # 4 cases
-    (1) A[i] = even & A[j] = even: i++
-    (2) A[i] = even & A[j] = odd: i++, j--
-    (3) A[i] = odd & A[j] = even: swap A[i], A[j], i++, j--
-    (4) A[i] = odd & A[j] = odd: j--
-```
----
-**#344 Reverse String**
-
-**#349 Intersection of Two Arrays**
-
-**#977 Squares of a Sorted Array**
 
 
 
