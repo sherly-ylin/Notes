@@ -162,6 +162,11 @@ return min(OPT[n-1], OPT[n])
 
 
 **#416 Partition Equal Subset Sum**
+- **Input**: array A of n pos integers
+- **Goal**: determine if A can be partitioned into two subsets with equal sum.
+- **Idea**: 0/1 Knapsack, to make sum(A)/2
+```
+```
 
 **#674 Longest Increasing Subarray**
 
@@ -180,8 +185,15 @@ for j = 2,...,n:
     min_i = max(A[j], min_i)
 ```
 **#1014 Best Sightseeing Pair**
-- Input: Array A
-- Goal: find i,j s.t. f(i,j)= A[i]+A[j]+i-j is maximized
+- **Input**: Array A
+- **Goal**: find i,j s.t. f(i,j)= A[i]+A[j]+i-j is maximized
+- **Idea**: similar to buy/sell stock, keep track of best_i
+```
+OPT[j] = max(A[i]+A[j]+i-j) with i<j
+OPT[j] = A[j]-j + max(A[i]+i) #i<j>
+
+
+```
   
 
 **-SCI Scheduling Intervals**
