@@ -6,10 +6,8 @@
 	- [1.? Sorting Summary](#1-sorting-summary)
 - [2. Basic Graph](#2-basic-graph)
 	- [2.1 BFS](#21-bfs)
-			- [BFS Tree](#bfs-tree)
 		- [Edge Classification](#edge-classification)
 	- [2.2 DFS](#22-dfs)
-			- [DFS Tree](#dfs-tree)
 	- [2.3 MST](#23-mst)
 		- [Cut Property](#cut-property)
 		- [Cycle Property](#cycle-property)
@@ -102,13 +100,14 @@ Runtime: O(logn)
 
 Runtime: O(m+n)
 
-#### BFS Tree
+####BFS Tree
 
 ### Edge Classification
 - **Forward edge**: ancestor --> decendent 
 - **Backword edge**: decendent --> ancestor
 - **Tree edge**: parent --> child
 - **Cross edge**: non of the above? (relatives, cousins, etc)
+
 ## 2.2 DFS 
 Pre- and Post- lists
 - Set pre value when first visit the vertex
@@ -117,7 +116,7 @@ Pre- and Post- lists
 
 Runtime: O(m+n)
 
-#### DFS Tree
+####DFS Tree
 
 ## 2.3 MST
 > **Minimum Spanning Tree**
