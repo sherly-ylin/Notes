@@ -1,2 +1,3 @@
 # Algorithm-Notes
-For COMP 550 
+Compiled notes for COMP 550 Algorithms and Analysis
+Not finished, still working...

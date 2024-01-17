@@ -1,8 +1,15 @@
 ### Content
 
+- [1. Array Algorithms](#1-array-algorithms)
+	- [1.2 Two Sum](#12-two-sum)
+	- [1.3 Binary Search](#13-binary-search)
+	- [1.? Sorting Summary](#1-sorting-summary)
 - [2. Basic Graph](#2-basic-graph)
 	- [2.1 BFS](#21-bfs)
+			- [BFS Tree](#bfs-tree)
+		- [Edge Classification](#edge-classification)
 	- [2.2 DFS](#22-dfs)
+			- [DFS Tree](#dfs-tree)
 	- [2.3 MST](#23-mst)
 		- [Cut Property](#cut-property)
 		- [Cycle Property](#cycle-property)
@@ -37,6 +44,57 @@
 	- [9.1 Vertex Cover](#91-vertex-cover)
 	- [9.2 Load Balancing](#92-load-balancing)
 
+# 1. Array Algorithms
+
+## 1.2 Two Sum
+**Input**: array A of n distinct integers, sorted increasing; target value t
+**Goal**: find i,j s.t A[i]+A[j] = t
+**Idea**: two pointers at 2 ends moving toward the middle
+
+	ALG(A,t):
+		i=1, j=n
+		while i≠j:
+			if A[i]+A[j]=t:
+				return (i,j)
+			if A[i]+A[j]<t:
+				i++
+			else:
+				j--
+		return 0
+Runtime: O(n)
+
+## 1.3 Binary Search
+**Input**: array A of n distinct integers, sorted increasing; target value t
+**Goal**: find index x of target value t (A[x]=t)
+**Idea**: left, right, middle pointers, shrink the array by half every time
+
+	ALG(A,t):
+		i=1, j=n
+		while i ≤ j:
+			m = (i+j)/2
+			if A[m]=t:
+				return m
+			if A[m]<t:
+				i = m+1
+			else:
+				j = m-1
+		return 0
+Runtime: O(logn)
+
+
+## 1.? Sorting Summary
+- Comparison-based:
+  - Simpler, more natural: **O(n^2)**
+    - Selection sort
+    - Insertion sort
+    - Bubble sort
+  - More Complecated: **O(nlogn)**
+    - Merge sort
+    - Heap sort
+    - Quick sort
+- Non comparison-based can do better than O(nlogn) (Radix)
+- **In this class, assume sorting an array of n elements takes O(nlogn)**.
+
 # 2. Basic Graph
 
 ## 2.1 BFS 
@@ -44,6 +102,13 @@
 
 Runtime: O(m+n)
 
+#### BFS Tree
+
+### Edge Classification
+- **Forward edge**: ancestor --> decendent 
+- **Backword edge**: decendent --> ancestor
+- **Tree edge**: parent --> child
+- **Cross edge**: non of the above? (relatives, cousins, etc)
 ## 2.2 DFS 
 Pre- and Post- lists
 - Set pre value when first visit the vertex
@@ -52,6 +117,8 @@ Pre- and Post- lists
 
 Runtime: O(m+n)
 
+#### DFS Tree
+
 ## 2.3 MST
 > **Minimum Spanning Tree**
 > - has exactly n-1 edges(w(e)>0), mininum total weight
@@ -59,11 +126,11 @@ Runtime: O(m+n)
 > - 
 
 ### Cut Property
-- For any S = subset of V (a cut)
-- The lightest edge crossing S is in MST
+- For any S = subset of V (a cut), the **lightest edge crossing S** is in MST
 
 ### Cycle Property
-- For any cycle C in G, the heaviest edge in C is not in MST
+- For any cycle C in G, the **heaviest edge in C** is **not** in MST
+
 
 ### Prim's
 - Choose any vertex s, let S = {s}, F = ø
@@ -71,9 +138,12 @@ Runtime: O(m+n)
 ### Kruskal's
 - Sort edges in **increasing** weight
 - for each edge e: add e to F if (V,FU{e}) has no cycle
+- (Start with ø, keep adding the lightest edge while remaining acyclic)
 ### Reverse-Delete
 - Sort edges in **decreasing** order, let F = E
 - for each edge e: remove e if (V,F-{e}) still connected
+- (Start with E, keep removing the heaviest edge while keeping connected)
+- (Kruskal's reversed)
 
 
 
@@ -387,10 +457,9 @@ c(S) = ∑c(e), e leaving S
 
 ## 6.2 Bipartite Matching
 A **matching M** is a subset of edges that don't share any endpoints
-**Input**: Bipartite undirected G. 		# G=(V,E), V=(L,R)
+**Input**: Bipartite undirected G:		**G=(V, E), V=(L, R)**
 **Goal**: find a subset of edges M such that 
-1. **feasible**: for all u in V, u in incident to at most 1 edge in M;
-				  <=> no edges in M share an endpoint
+1. **feasible**: for all u in V, u in incident to at most 1 edge in M; (<=> no edges in M share an endpoint)
 2. **optimal**: maximize the # of edge in M, |M|
 
 ```
@@ -421,7 +490,7 @@ ALG(G):
 
 ```
 
-**Corollary**: feasible flow in G' <=> matching in G 	#|f| = |M|
+**Corollary**: feasible flow in G' <=> matching in G, |f| = |M| (value of flow = size of matching)
 6---
 residual graph
 min s-t cut

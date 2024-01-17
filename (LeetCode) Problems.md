@@ -1,12 +1,14 @@
-- [DP](#dp)
-  - [LIS类](#lis类)
-  - [Knapsack类](#knapsack类)
-  - [MIS类]
 - [Array](#array)
   - [Two-Pointer](#two-pointer)
+- [Dynamic Programming](#dp)
+  - [LIS-like](#lis-like)
+  - [Knapsack-like](#knapsack-like)
+  - [MIS-like](#mis-like)
 - [Graph](#graph)
-- [Flow](#flow)
--
+- [Flow Network](#flow)
+- [Proof](#proof)
+
+
 
 
 # Array
@@ -32,9 +34,9 @@ while i<j:  # 4 cases
 
 # DP
 
-## LIS类
->要不然 attach to previous，要不然 just be it alone
-### **LIS - O(n^2)**
+## LIS-like
+> either attach to previous, or just be itself alone
+#### **LIS - O(n^2)**
 - **Input**: array A in n integers
 - **Goal**: Find LIS / length of LIS
 - **Idea**: either include max(previous LIS), or not -- only A[i] (d[i]=1)
@@ -105,7 +107,7 @@ OPT[i][j] = OPT[i-1][j-1]+1, if A[i]=B[j]
 		#otherwise check if can include one of A[i],B[j]
 ```
 
-## Knapsack类
+## Knapsack-like
 > Idea: for each item: [pick it] OR [not pick it]
 
 **- 0/1 Knapsack in class (supply: 1) O(n^2)**
@@ -202,7 +204,7 @@ OPT[j] = A[j]-j + max(A[i]+i) #i<j>
 
 **SCI Max Reward II**
 
-## MIS类
+## MIS-like
 **MIS (2-subproblem) - O(n) -similar to BFS**
 > IS: a subset S of V s.t. no pair shares an edge
 - **Input**: Tree T (undirected connected G), each vertex u has weight w(u)>0
@@ -245,13 +247,13 @@ OPT[i] = max(OPT[i-1], vi + OPT[pi])
         #binary search p - O(logn)* n interval
 ```
 # Graph
-### **Finding Negative Cycle [KT]**
+#### **Finding Negative Cycle [KT]**
 > DP version of Bellman-Ford
 > 
 
 **Idea:** Run Bellman
 
-### **Detect Negative Cycle**
+#### **Detect Negative Cycle**
 > Recall: input to **Bellman-Ford** and **Floyd-Warshall** can't have negative cycles
 
 **Using Bellman-Ford:** 
@@ -286,7 +288,7 @@ Idea: Add s, t vertices:
 
 # Proof
 
-## Prove optimal and feasible (SCI Greedy)
+#### Prove optimal and feasible (SCI Greedy)
 1. Feasible: show result ALG satisify conditions
 2. Optimal:
    1. Suppose for contradiction ALG is not optimal OPT, i.e. ALG(i) ≠ OPT(i) [their i-th decision is different]
