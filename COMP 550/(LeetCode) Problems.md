@@ -1,12 +1,11 @@
 - [Array](#array)
   - [Two-Pointer](#two-pointer)
-- [Dynamic Programming](#dp)
+- [DP](#dp)
   - [LIS-like](#lis-like)
-  - [Knapsack-like](#knapsack-like)
-  - [MIS-like](#mis-like)
-- [Graph](#graph)
-- [Flow Network](#flow)
+      - [**LIS - O(n^2)**](#lis---on2)
+- [2 loops: i:n-\>1; j:1-\>n](#2-loops-in-1-j1-n)
 - [Proof](#proof)
+      - [Prove optimal and feasible (SCI Greedy)](#prove-optimal-and-feasible-sci-greedy)
 
 
 
@@ -94,7 +93,7 @@ OPT[i][j] = if A[i]=A[j]: max(d[i][j-1], d[i+1][j])
             otherwise:  max(d[i][j-1], d[i+1][j], 2+d[i+1][j-1]))
 # 2 loops: i:n->1; j:1->n
 ```
-**#Leetcode 1143 Longest Common Subsequence**
+**#LeetCode 1143: Longest Common Subsequence**
 - **Input**: String A, B
 - **Return**: the length of their longest common subsequence, 0 if none
 ```
@@ -106,6 +105,11 @@ OPT[i][j] = OPT[i-1][j-1]+1, if A[i]=B[j]
 		#include this if A[i]=B[j]
 		#otherwise check if can include one of A[i],B[j]
 ```
+
+**LeetCode 1911: Maximum Alternating Subsequence Sum**
+- Input: array of positive
+- Goal: max alternating sum
+- The **alternating sum** of a 0-indexed array: the sum of the elements at even indices minus the sum of the elements at odd indices.
 
 ## Knapsack-like
 > Idea: for each item: [pick it] OR [not pick it]

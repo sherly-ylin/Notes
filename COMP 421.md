@@ -1,4 +1,7 @@
-### Content
+## Content
+- [Chapter 1 - Introduction](#chapter-1---introduction)
+      - [1.4 Database Languages](#14-database-languages)
+  - [Data Definition Language (DDL)](#data-definition-language-ddl)
 - [Chapter 2](#chapter-2)
   - [Relational Algebra](#relational-algebra)
 - [SQL](#sql)
@@ -14,11 +17,121 @@
         - [LEFT JOIN](#left-join)
     - [Views](#views)
 
+# Chapter 1 - Introduction
+**Database Management System (DBMS) **
+- database and software that manages databases
+- to store and retrieve data efficiently and conveniently
+
+**DBMS vs typical file-processing system**
+- Data redundancy and inconsistency
+- Difficulty in accessing/retrival (filter)
+- Data integrity problems
+- Atomicity problems
+- Concurrent Access problems
+
+**Data Models**
+Relational Model
+- A record-based model
+- Data is organized in tables (relations)
+  - Each table contains records of a particular type
+  - Each record types defines a fixed number of attributes
+- Relationships between tables
+
+## Data Abstraction
+**Physical Level**
+- How data are actually stored
+- (Physical storage, storage devices, data structures, etc)
+- a record ≈ a block of consecutive bytes
+
+**Logical Level**
+- What data are stored and what relationship exists among them
+- Users interact with the database through queries and transactions expressed in a data manipulation language (such as SQL) at this level
+- Data administrators use this level.
+- The logical level provides a way to view the database independently of its physical storage implementation. (Physical data independence)
+- a record ≈ a type definition
+
+**View Level**
+- describes only part of the entire database
+- provides a customized view of the database tailored to the specific needs of different users or applications, & add secutiry mechanism
+- The system may provide many views for the same database.
+- user see a set off application programs that can hide details of the data types
+
+
+## Database Languages
+**Data Definition Language (DDL)**
+- to specify database schima
+  - domain constraint, referential integrity, authorization
+- <code>CREATE</code>, create new table
+- <code>ALTER</code>, modify existing table structure(add/edit attribute)
+- <code>DROP</code>, delete table
+- <code>TRUNCATE</code>, delete all data inside a table
+  
+**Data Manipulation Language (DML)**
+- Queries and updates
+- <code>SELECT</code>, retrieve records
+- <code>INSERT</code>, insert records(rows)
+- <code>DELETE</code>, delete records
+- <code>UPDATE</code>, modify records
+  
+### The Database Engine
+**Storage Manager**
+- responsible for storing, retrieving, and updating data in the database.
+- interact with the file manager
+- translate DML statment into low-level file-system commands
+- Components: authorization and intergrity manager, transaction manager, file manager, buffer manager...
+
+**Query Processor**
+- responsible for processing and executing queries 
+- Components: DDL interperter, DML compiler, query evaluation engine
+
+**Transaction Management**
+- reponsible for ensuring the ACID properties (Atomicity, Consistensy, Isolation, Durability)
+- coordinates the execution of transactions -- sequences of operations that constitute a logical unit of work, and ensures that they are executed
+  -  atomically (all or nothing), 
+  -  consistently (maintaining data integrity constraints), 
+  -  isolated (without interference from other transactions), and 
+  -  durably (persistently stored).
+-  Components: recovery manager, concurrency-control manager
+
 # Chapter 2
+
+
+**Database schema** -- logical design of the database
+**Database instances** -- a snapshot of database content at a point in time
+**A relation instance** = a specific iinstance of a relation
+
+
+## Keys
+Key - a principal means of identifying a tuple in a relation
+
+**Super Key**
+- a set of attribute(S) that uniquely identify a tuple in the relation
+- a superset of super key is a super key
+
+**Candidate Key**
+- a minimal superkey -- no subset of it is a superkey
+
+**Primary Key**
+- a candidate key
+- chosen by the database designer as the main way if identifying tuples within a relation
+- the `PRIMARY KEY` constraint: the constrained columns' values must uniquely identify each row
+
+**Foreign Key**
+- an attribute in a relation that is also the primary key of another relation (reference)
+- the `FOREIGN KEY` constraint: 
+
 ## Relational Algebra
 
-**Select $\sigma$**
+####Select $\sigma$
+
+<table>
+<tr>
+<td> 
+
 $\sigma_{<predicate>}(relation)$
+
+</td>
+<td>
 
 ```
 SELECT * 
@@ -26,36 +139,113 @@ FROM relation
 WHERE <predicate>
 ```
 
-**Project $\Pi$**
+</td>
+</tr>
+</table>
+
+
+#### Project $\Pi$
+<table>
+<tr>
+<td> 
+
 $\Pi_{id, name}(relation)$
+
+</td>
+<td>
+
 ```
 SELECT id, name 
 FROM relation
 ```
 
-**Cartesian-product $\times$**
-$r_1 \times r_2$
--> equivalent to Cross Join - a combined tuple of each possible pair
+</td>
+</tr>
+</table>
+
+
+#### Cartesian-product $\times$
+-> equivalent to `CROSS JOIN` - a combined tuple of every possible pair
 -> # of rows in resulting table = (# of rows in $r_1$) (# of rows in $r_2$) 
-```
+
+<table>
+<tr>
+<td> 
+
+$r_1 \times r_2$
+
+</td>
+<td>
 
 ```
+r1 CROSS JOIN r2
+```
+
+</td>
+</tr>
+</table>
 
 
-**Join $\Join$**
-$r_1 \Join_a r_2 = \sigma_a (r_1 \times r_2)$
+#### Join $\Join$
+- a derivative of Cartesian product
+
+
+<table>
+<tr>
+<td> 
+
+$r_1 \Join_P r_2 $
+
+</td>
+<td>
+
+```
+r1 JOIN r2 ON [P]
+```
+
+</td>
+</tr>
+
+<tr>
+<td> 
+
+$ \sigma_P (r_1 \times r_2)$
+
+</td>
+<td>
+
+```
+r1 CROSS JOIN r2  WHERE [P]
+-- SQL will keep the column used for join from both tables
+-- but not in relational algebra
+```
+
+</td>
+</tr>
+</table>
+
+$r_1 \Join_P r_2 = \sigma_P (r_1 \times r_2)$
+
+
 Equivalent:
-$Movies \Join_{movies.director=directors.name} Directors$
-$\sigma_{movies.director=directors.name} (Movies \times Directors)$
+- $Customers \Join_{Customers.customer_id=Orders.customer_id} Orders$
+- $\sigma_{Customers.customer_id=Orders.customer_id} (Customers \times Orders)$
 
 ```
 SELECT * 
-FROM movies m 
-JOIN directors d ON m.director=director.name
+FROM customers c
+JOIN orders o ON c.customer_id=o.customer_id
+--
+SELECT * 
+FROM customers c
+CROSS JOIN orders
+WHERE c.customer_id=o.customer_id
 ```
 
 
-**Union $\cup$**
+#### Union $\cup$
+SQL : `UNION`
+
 $\Pi_{name}(Movies)\cup\Pi_{name}(Series)$
 ```
 SELECT name FROM Movies
@@ -63,12 +253,14 @@ UNION
 SELECT name FROM Series
 ```
 
-**Intersection $\cap$**
+#### Intersection $\cap$
+SQL : `INTERSECT`
 
-**Set-difference $-$**
+#### Set-difference $-$
+SQL : `EXCEPT`
 
-
-**Assignment $\leftarrow$**
+#### Assignment $\leftarrow$
+- works like assignment in a programming language
 $Physics\leftarrow\sigma_{department='Physics'}(instructor)$
 ```
 WITH Physics AS (SELECT * 
@@ -76,12 +268,15 @@ WITH Physics AS (SELECT *
                   WHERE department='Physics')
 ```
 
-**Rename $\rho$**
-$\rho_x(E)$, a relational-algebra expression E is remaned "x"
+#### Rename $\rho$
+$\rho_x(E)$
+- result of a relational-algebra expression E is remaned "x"
+
+
+
 
 # SQL
 
-## SQL Basics
 - Data-definition language (DDL)
   - specification of information about relations
     - schema for each relation
@@ -94,7 +289,7 @@ $\rho_x(E)$, a relational-algebra expression E is remaned "x"
 - Data-manipulation language (DML)
   - for modifying a database's data
 
-#### DDL 
+## Data Definition Language (DDL)
 - Basic Schema Definition
 <table>
 <tr>
@@ -177,7 +372,7 @@ Used to delete all the rows from the table, and free up the space in the table.
 </tr>
 </table>
 
-##### SQL Constraints
+## SQL Constraints
 
 - **`PRIMARY KEY(A1, …, Am)`**
   - the primary-key attributes have to be non null and unique
@@ -188,7 +383,7 @@ Used to delete all the rows from the table, and free up the space in the table.
 - **`CHECK`**: used to limit the value range that can be placed in a column.
 - **`on delete/update cascade`**
 
-#### Data Manipulation Language (DML)
+## Data Manipulation Language (DML)
 
 <table>
 <tr>
@@ -255,13 +450,170 @@ WHERE name='Alex'
 
 
 
-## SQL Query Language
+## SQL Query 
+General order of clauses:
+```
+SELECT [column]
+FROM [table]
+WHERE [predicate]
+ORDER BY [selected column] [desc, default asc]
+LIMIT [number of rows]
+```
+
+`SELECT` 
+- `DISTINCT` - remove duplicates
+- `ALL` - explicitly keep duplicates
+- `TOP` [number]
+
+
+### Where
+`WHERE`
+
+- `[predicate] AND [predicate] OR [predicate]`
+  - AND has higher priority that OR
+- `[column] IN (value1, value2, ...)`
+- `[column] BETWEEN [number] AND [number]`
+- `[column] IS (NOT) NULL`
+- `EXIST (subquery)`
+- `UNIQUE (subquery)`
+
+
+`EXIST` - return TRUE if there exist any record in the subquery, i.e. the outer SQL query is executed only if the subquery is not null
+```
+SELECT ... FROM ....
+WHERE EXIST 
+(SELECT column_name FROM table_name WHERE condition)
+```
+`UNIQUE` -- if subquey contains duplicates in the results
+
+### String operations
+
+`(string) LIKE (exp)`
+- `'%'` - any number of characters,
+- `'_'` - a single character
+`‘%y’` 		- ends with y
+`‘_y’` 		- exactly 2 characters ends with y
+
+Escape character `\` to escape special characters, &, \
+- `like 'ab∖%cd%' escape '∖'` matches all strings beginning with “ab%cd”
+- `like 'ab∖∖cd%' escape '∖'` matches all strings beginning with “ab∖cd”
+
+
+### Group by
+`GROUP BY`
+- usually only need `group by` with aggregate functions
+- **attribute in `select` clause outside of aggregate function must appear in group by list**
+
+Group by multiple columns:
+- `Group By X` : put all records with the same value for X in the one group (row)
+
+- `Group By X, Y` : put all records with the same values for both X and Y in the one group.
+
+<table>
+<tr>
+  <td>
+
+  ```
+  select * from Seletcion
+  ```
+
+  </td>
+  <td>
+
+  | Subject | Section | Attendee |
+  | ------- | ----- | ------- |
+  | A       | 101   | Joel
+  | A       | 102   | Alex
+  | A       | 102   | Michael
+  | A       | 102   | David
+  | B       | 101   | Joel
+  | B       | 101   | Amy
+
+  </td>
+</tr>
+<tr>
+  <td>
+
+  ```
+  select Subject, count(*)
+  from Selection
+  group by Subject
+  ```
+
+  </td>
+  <td>
+
+  | Subject | Count | 
+  | ------- | ----- | 
+  | A       | 4   | 
+  | B       | 2   | 
+
+  </td>
+</tr>
+
+<tr>
+  <td>
+
+  ```
+  select Subject, Section, count(*)
+  from Selection
+  group by Subject, Section
+  ```
+
+  </td>
+  <td>
+
+  | Subject | Section | Count | 
+  | ------- | ----- | ----- | 
+  | A       | 101   |   1   | 
+  | A       | 102   |   3   | 
+  | B       | 101   |   2   |
+
+  </td>
+</tr>
+</table>
+
+`**HAVING**` 
+- after groups have formed, aggregate functions can be used 
+ 
+
+### Aggregate Functions
+- Often used with the GROUP BY clause of the SELECT statement
+- `MIN(column)`
+- `MAX(column)`
+- `COUNT(column)`, `COUNT(DISTINCT column)` 
+- `SUM(column)`
+- `AVG(column)`
 
 
 
-
+### Set Operations
+- the number of columns must be equal, compatible types
+- set oprations automatically remove duplicate
+- use `ALL` to keep duplicate
+`UNION`
+`INTERSECT` 
+`EXCEPT`
+```
+(query) 
+UNION/INTERSECT/EXCEPT (ALL)
+(query)
+```
+#### Set Comparison
+- `= some` <=> `in`
+- `≠ some` <=> `not in`
+- `≠ all` <=> `not in`
+- 
 ### Joins
-##### (INNER) JOIN (the default join)
+
+`JOIN` 
+- `ON `
+- `USING()`
+
+
+#### Join (Inner Join)
+`JOIN` = `INNER JOIN` (the default join)
+- R
 Equivalent:
 <table>
 <tr>
@@ -299,27 +651,26 @@ WHERE c.customer_id=o.customer_id
 - Both <code>customer_id</code> columns will remain in the result
 - use <code>USING</code> when the column names(and type) match
 
-##### NATURAL JOIN
+#### Natural Join
+`NATURAL JOIN`
 - Automatically use the common column names to define the join relationship
 - There must be at least one common attribute
 - Delete duplicate columns and inconsistant tuples
-
+- perform Cartesian product --> find matching tuples & delete duplicates --> delete duplicate column
 ```
 SELECT c.customer_id id, o.amount
 FROM customers c NATURAL JOIN orders o 
 ```
 
 
-#### OUTER JOIN
-##### LEFT JOIN 
-
-RIGHT JOIN
-  
-FULL JOIN
+#### Outer Joins
+`LEFT JOIN`
+`RIGHT JOIN`
+`FULL JOIN` = 
 
 
 
-### Views
+## Views
 
 Format:
 ```
@@ -348,3 +699,78 @@ Delete views:
 ```
 DROP VIEW (IF EXIST) <view_name>
 ```
+
+
+## SQL Commands Summary
+<table>
+<tr>
+  <td>
+
+  ```
+  SELECT DISTINCT 
+  SELECT ALL
+  SELECT TOP 3
+  ```
+  
+  </td>
+  <td>1</td>
+</tr>
+
+<tr>
+  <td>
+
+  ```
+  r1 JOIN r2 USING(col)
+  r1 JOIN r2 ON r1.col=r2.col
+  ```
+  
+  </td>
+  <td></td>
+</tr>
+
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+
+</table>
+
+
+`Distinct` mean : count all the values as 1, even if there was more than one.
+`Unique` mean : count only the value that are not repeated in the particular column
+
+### Order of Exectution
+1. from / joins
+2. where
+3. group by
+4. having
+5. select
+6. distinct
+7. order by
+8. limit
+
+- the joins are executed in the order they are specified in the `FROM` clause
+- Having clause applied after the formation of groups
+- Where clause applied before the formation of groups
+
+
+----------
+`WITH var_name AS (subquery)`
+
+
+
