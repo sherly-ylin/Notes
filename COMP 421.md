@@ -484,6 +484,10 @@ SELECT ... FROM ....
 WHERE EXIST 
 (SELECT column_name FROM table_name WHERE condition)
 ```
+
+`WHERE EXISTS (subquery)` <=> `WHERE 0 <> (subquery)`
+- `0 <> (subquery)` : 0 ≠ [# of rows of subquery]
+
 `UNIQUE` -- if subquey contains duplicates in the results
 
 ### String operations
