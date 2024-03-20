@@ -172,6 +172,27 @@ CFG for L1*: **S → S1S|ε**
 <td>
 
 • Desider for **L1 ∪ L2**: 
+On input x, run M1 and M2 on x, and accept iff either accepts, rejects if both rejects. (Similarly for intersection.)
+• Desider for **L1**: 
+On input x, run M1 on x, and accept if M1 rejects, and reject if M1 accepts.
+• Desider for **L1L2:** 
+On input x, for each of the |x|+1 ways to divide x as yz: run M1 on y and M2 on z, and accept if both accept. Else reject.
+• Desider for **L*1**: On input x, if x = ε accept. Else, for each of the 2|x|−1 ways to divide x as w1 . . . wk (wi ̸= ε): run M1 on each wi and accept if M1 accepts all. Else reject.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+**Turing-Recognizable Languages** are closed under:
+- Union ∪, Intersecion ∩ 
+- concatenation °, star*
+- NOT complementation
+</td>
+<td>
+
+• Recognizer for **L1 ∪ L2**: 
 On input x, run M1 and M2 on x, and accept iff either accepts. (Similarly for intersection.)
 • Desider for **L1**: 
 On input x, run M1 on x, and accept if M1 rejects, and reject if M1 accepts.
