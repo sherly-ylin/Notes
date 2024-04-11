@@ -1,28 +1,48 @@
 ## Content
+
 - [Chapter 1 - Introduction](#chapter-1---introduction)
-      - [1.4 Database Languages](#14-database-languages)
-  - [Data Definition Language (DDL)](#data-definition-language-ddl)
+  - [Data Abstraction](#data-abstraction)
+  - [Database Languages](#database-languages)
+    - [The Database Engine](#the-database-engine)
 - [Chapter 2](#chapter-2)
+  - [Keys](#keys)
   - [Relational Algebra](#relational-algebra)
+      - [Project $\\Pi$](#project-pi)
+      - [Cartesian-product $\\times$](#cartesian-product-times)
+      - [Join $\\Join$](#join-join)
+      - [Union $\\cup$](#union-cup)
+      - [Intersection $\\cap$](#intersection-cap)
+      - [Set-difference $-$](#set-difference--)
+      - [Assignment $\\leftarrow$](#assignment-leftarrow)
+      - [Rename $\\rho$](#rename-rho)
 - [SQL](#sql)
-  - [SQL Basics](#sql-basics)
-      - [DDL](#ddl)
-        - [SQL Constraints](#sql-constraints)
-      - [Data Manipulation Language (DML)](#data-manipulation-language-dml)
-  - [SQL Query Language](#sql-query-language)
+  - [Data Definition Language (DDL)](#data-definition-language-ddl)
+  - [SQL Constraints](#sql-constraints)
+  - [Data Manipulation Language (DML)](#data-manipulation-language-dml)
+  - [SQL Query](#sql-query)
+    - [Where](#where)
+    - [String operations](#string-operations)
+    - [Group by](#group-by)
+    - [Aggregate Functions](#aggregate-functions)
+    - [Set Operations](#set-operations)
+      - [Set Comparison](#set-comparison)
     - [Joins](#joins)
-        - [(INNER) JOIN (the default join)](#inner-join-the-default-join)
-        - [NATURAL JOIN](#natural-join)
-      - [OUTER JOIN](#outer-join)
-        - [LEFT JOIN](#left-join)
-    - [Views](#views)
+      - [Join (Inner Join)](#join-inner-join)
+      - [Natural Join](#natural-join)
+      - [Outer Joins](#outer-joins)
+  - [Views](#views)
+  - [SQL Commands Summary](#sql-commands-summary)
+    - [Order of Exectution](#order-of-exectution)
 
 # Chapter 1 - Introduction
-**Database Management System (DBMS) **
+
+**Database Management System (DBMS)**
+
 - database and software that manages databases
 - to store and retrieve data efficiently and conveniently
 
 **DBMS vs typical file-processing system**
+
 - Data redundancy and inconsistency
 - Difficulty in accessing/retrival (filter)
 - Data integrity problems
@@ -31,6 +51,7 @@
 
 **Data Models**
 Relational Model
+
 - A record-based model
 - Data is organized in tables (relations)
   - Each table contains records of a particular type
@@ -38,12 +59,15 @@ Relational Model
 - Relationships between tables
 
 ## Data Abstraction
+
 **Physical Level**
+
 - How data are actually stored
 - (Physical storage, storage devices, data structures, etc)
 - a record ≈ a block of consecutive bytes
 
 **Logical Level**
+
 - What data are stored and what relationship exists among them
 - Users interact with the database through queries and transactions expressed in a data manipulation language (such as SQL) at this level
 - Data administrators use this level.
@@ -51,74 +75,84 @@ Relational Model
 - a record ≈ a type definition
 
 **View Level**
+
 - describes only part of the entire database
 - provides a customized view of the database tailored to the specific needs of different users or applications, & add secutiry mechanism
 - The system may provide many views for the same database.
 - user see a set off application programs that can hide details of the data types
 
-
 ## Database Languages
+
 **Data Definition Language (DDL)**
+
 - to specify database schima
   - domain constraint, referential integrity, authorization
-- <code>CREATE</code>, create new table
-- <code>ALTER</code>, modify existing table structure(add/edit attribute)
-- <code>DROP</code>, delete table
-- <code>TRUNCATE</code>, delete all data inside a table
-  
+- `<code>`CREATE`</code>`, create new table
+- `<code>`ALTER`</code>`, modify existing table structure(add/edit attribute)
+- `<code>`DROP`</code>`, delete table
+- `<code>`TRUNCATE`</code>`, delete all data inside a table
+
 **Data Manipulation Language (DML)**
+
 - Queries and updates
-- <code>SELECT</code>, retrieve records
-- <code>INSERT</code>, insert records(rows)
-- <code>DELETE</code>, delete records
-- <code>UPDATE</code>, modify records
-  
+- `<code>`SELECT`</code>`, retrieve records
+- `<code>`INSERT`</code>`, insert records(rows)
+- `<code>`DELETE`</code>`, delete records
+- `<code>`UPDATE`</code>`, modify records
+
 ### The Database Engine
+
 **Storage Manager**
+
 - responsible for storing, retrieving, and updating data in the database.
 - interact with the file manager
 - translate DML statment into low-level file-system commands
 - Components: authorization and intergrity manager, transaction manager, file manager, buffer manager...
 
 **Query Processor**
-- responsible for processing and executing queries 
+
+- responsible for processing and executing queries
 - Components: DDL interperter, DML compiler, query evaluation engine
 
 **Transaction Management**
+
 - reponsible for ensuring the ACID properties (Atomicity, Consistensy, Isolation, Durability)
 - coordinates the execution of transactions -- sequences of operations that constitute a logical unit of work, and ensures that they are executed
-  -  atomically (all or nothing), 
-  -  consistently (maintaining data integrity constraints), 
-  -  isolated (without interference from other transactions), and 
-  -  durably (persistently stored).
--  Components: recovery manager, concurrency-control manager
+  - atomically (all or nothing),
+  - consistently (maintaining data integrity constraints),
+  - isolated (without interference from other transactions), and
+  - durably (persistently stored).
+- Components: recovery manager, concurrency-control manager
 
 # Chapter 2
-
 
 **Database schema** -- logical design of the database
 **Database instances** -- a snapshot of database content at a point in time
 **A relation instance** = a specific iinstance of a relation
 
-
 ## Keys
+
 Key - a principal means of identifying a tuple in a relation
 
 **Super Key**
+
 - a set of attribute(S) that uniquely identify a tuple in the relation
 - a superset of super key is a super key
 
 **Candidate Key**
+
 - a minimal superkey -- no subset of it is a superkey
 
 **Primary Key**
+
 - a candidate key
 - chosen by the database designer as the main way if identifying tuples within a relation
 - the `PRIMARY KEY` constraint: the constrained columns' values must uniquely identify each row
 
 **Foreign Key**
+
 - an attribute in a relation that is also the primary key of another relation (reference)
-- the `FOREIGN KEY` constraint: 
+- the `FOREIGN KEY` constraint:
 
 ## Relational Algebra
 
@@ -133,7 +167,7 @@ $\sigma_{<predicate>}(relation)$
 </td>
 <td>
 
-```
+```sql
 SELECT * 
 FROM relation 
 WHERE <predicate>
@@ -154,7 +188,7 @@ $\Pi_{id, name}(relation)$
 </td>
 <td>
 
-```
+```sql
 SELECT id, name 
 FROM relation
 ```
@@ -177,7 +211,7 @@ $r_1 \times r_2$
 </td>
 <td>
 
-```
+```sql
 r1 CROSS JOIN r2
 ```
 
@@ -199,7 +233,7 @@ $r_1 \Join_P r_2 $
 </td>
 <td>
 
-```
+```sql
 r1 JOIN r2 ON [P]
 ```
 
@@ -214,7 +248,7 @@ $ \sigma_P (r_1 \times r_2)$
 </td>
 <td>
 
-```
+```sql
 r1 CROSS JOIN r2  WHERE [P]
 -- SQL will keep the column used for join from both tables
 -- but not in relational algebra
@@ -231,7 +265,7 @@ Equivalent:
 - $Customers \Join_{Customers.customer_id=Orders.customer_id} Orders$
 - $\sigma_{Customers.customer_id=Orders.customer_id} (Customers \times Orders)$
 
-```
+```sql
 SELECT * 
 FROM customers c
 JOIN orders o ON c.customer_id=o.customer_id
@@ -300,7 +334,7 @@ $\rho_x(E)$
 
 <td> 
 
-```
+```sql
 CREATE TABLE table_name(
   column_1 datatype [constraint],
   column_2 datatype,
@@ -312,7 +346,7 @@ CREATE TABLE table_name(
 </td>
 <td>
 
-```
+```sql
 CREATE TABLE Student(
   id int NOT NULL,
   name varchar(25) NOT NULL ,
@@ -329,14 +363,14 @@ CREATE TABLE Student(
 <td> DELETE </td>
 <td> 
 
-```
+```sql
 DROP TABLE table_name
 ```
 
 </td>
 <td>
 
-```
+```sql
 DROP TABLE IF EXISTS table_name
 ```
 </td>
@@ -344,14 +378,14 @@ DROP TABLE IF EXISTS table_name
 <td> ALTER </td>
 <td> 
 
-```
+```sql
 ALTER TABLE table_name
 ```
 
 </td>
 <td>
 
-```
+```sql
 ALTER TABLE student ADD(address VARCHAR2(20) DEFAULT '');  
 ALTER TABLE student MODIFY (address VARCHAR2(20));  
 ```
@@ -361,7 +395,7 @@ ALTER TABLE student MODIFY (address VARCHAR2(20));
 <td> TRUNCATE </td>
 <td> 
 
-```
+```sql
 TRUNCATE TABLE table_name
 ```
 
@@ -393,7 +427,7 @@ Used to delete all the rows from the table, and free up the space in the table.
 <td> INSERT </td>
 <td> 
 
-```
+```sql
 INSERT INTO table (column_1, column_2, ...) 
 VALUES (value_1, value_2, ...);  
 ```
@@ -401,7 +435,7 @@ VALUES (value_1, value_2, ...);
 </td>
 <td>
 
-```
+```sql
 INSERT INTO student (id, name, age) 
 VALUES (13, 'Alex', 21);  
 ```
@@ -412,14 +446,14 @@ VALUES (13, 'Alex', 21);
 <td> DELETE </td>
 <td> 
 
-```
+```sql
 DELETE FROM <table> WHERE <predicate>
 ```
 
 </td>
 <td>
 
-```
+```sql
 DELETE FROM student WHERE name='Alex'
 DELETE FROM student -- all records will be deleted
 ```
@@ -428,7 +462,7 @@ DELETE FROM student -- all records will be deleted
 <td> UPDATE </td>
 <td> 
 
-```
+```sql
 UPDATE TABLE table_name
 SET <column> = <value>  
 WHERE <predicate>  
@@ -437,7 +471,7 @@ WHERE <predicate>
 </td>
 <td>
 
-```
+```sql
 UPDATE TABLE student
 SET age = 22  
 WHERE name='Alex' 
@@ -452,7 +486,7 @@ WHERE name='Alex'
 
 ## SQL Query 
 General order of clauses:
-```
+```sql
 SELECT [column]
 FROM [table]
 WHERE [predicate]
@@ -479,7 +513,7 @@ LIMIT [number of rows]
 
 
 `EXIST` - return TRUE if there exist any record in the subquery, i.e. the outer SQL query is executed only if the subquery is not null
-```
+```sql
 SELECT ... FROM ....
 WHERE EXIST 
 (SELECT column_name FROM table_name WHERE condition)
@@ -582,13 +616,13 @@ Group by multiple columns:
  
 
 ### Aggregate Functions
-- Often used with the GROUP BY clause of the SELECT statement
 - `MIN(column)`
 - `MAX(column)`
 - `COUNT(column)`, `COUNT(DISTINCT column)` 
 - `SUM(column)`
 - `AVG(column)`
-
+- Often **used with the GROUP BY** clause of the SELECT statement, use **HAVING** for $condition on aggregated column 
+- **Aggregate functions are not allowed in the WHERE clause**
 
 
 ### Set Operations
@@ -758,7 +792,9 @@ DROP VIEW (IF EXIST) <view_name>
 `Distinct` mean : count all the values as 1, even if there was more than one.
 `Unique` mean : count only the value that are not repeated in the particular column
 
+
 ### Order of Exectution
+
 1. from / joins
 2. where
 3. group by
@@ -772,9 +808,6 @@ DROP VIEW (IF EXIST) <view_name>
 - Having clause applied after the formation of groups
 - Where clause applied before the formation of groups
 
+---
 
-----------
 `WITH var_name AS (subquery)`
-
-
-
