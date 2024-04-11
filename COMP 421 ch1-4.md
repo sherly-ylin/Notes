@@ -7,14 +7,14 @@
 - [Chapter 2](#chapter-2)
   - [Keys](#keys)
   - [Relational Algebra](#relational-algebra)
-      - [Project $\\Pi$](#project-pi)
-      - [Cartesian-product $\\times$](#cartesian-product-times)
-      - [Join $\\Join$](#join-join)
-      - [Union $\\cup$](#union-cup)
-      - [Intersection $\\cap$](#intersection-cap)
+      - [Project $\Pi$](#project-pi)
+      - [Cartesian-product $\times$](#cartesian-product-times)
+      - [Join $\Join$](#join-join)
+      - [Union $\cup$](#union-cup)
+      - [Intersection $\cap$](#intersection-cap)
       - [Set-difference $-$](#set-difference--)
-      - [Assignment $\\leftarrow$](#assignment-leftarrow)
-      - [Rename $\\rho$](#rename-rho)
+      - [Assignment $\leftarrow$](#assignment-leftarrow)
+      - [Rename $\rho$](#rename-rho)
 - [SQL](#sql)
   - [Data Definition Language (DDL)](#data-definition-language-ddl)
   - [SQL Constraints](#sql-constraints)
@@ -87,18 +87,18 @@ Relational Model
 
 - to specify database schima
   - domain constraint, referential integrity, authorization
-- `<code>`CREATE`</code>`, create new table
-- `<code>`ALTER`</code>`, modify existing table structure(add/edit attribute)
-- `<code>`DROP`</code>`, delete table
-- `<code>`TRUNCATE`</code>`, delete all data inside a table
+- ```CREATE```, create new table
+- ```ALTER```, modify existing table structure(add/edit attribute)
+- ```DROP```, delete table
+- ```TRUNCATE```, delete all data inside a table
 
 **Data Manipulation Language (DML)**
 
 - Queries and updates
-- `<code>`SELECT`</code>`, retrieve records
-- `<code>`INSERT`</code>`, insert records(rows)
-- `<code>`DELETE`</code>`, delete records
-- `<code>`UPDATE`</code>`, modify records
+- ```SELECT```, retrieve records
+- ```INSERT```, insert records(rows)
+- ```DELETE```, delete records
+- ```UPDATE```, modify records
 
 ### The Database Engine
 
@@ -484,7 +484,7 @@ WHERE name='Alex'
 
 
 
-## SQL Query 
+### SELECT - SQL Query 
 General order of clauses:
 ```sql
 SELECT [column]
@@ -500,7 +500,7 @@ LIMIT [number of rows]
 - `TOP` [number]
 
 
-### Where
+#### Where
 `WHERE`
 
 - `[predicate] AND [predicate] OR [predicate]`
@@ -524,7 +524,7 @@ WHERE EXIST
 
 `UNIQUE` -- if subquey contains duplicates in the results
 
-### String operations
+#### String operations
 
 `(string) LIKE (exp)`
 - `'%'` - any number of characters,
@@ -537,7 +537,7 @@ Escape character `\` to escape special characters, &, \
 - `like 'ab∖∖cd%' escape '∖'` matches all strings beginning with “ab∖cd”
 
 
-### Group by
+#### Group by
 `GROUP BY`
 - usually only need `group by` with aggregate functions
 - **attribute in `select` clause outside of aggregate function must appear in group by list**
@@ -615,7 +615,7 @@ Group by multiple columns:
 - after groups have formed, aggregate functions can be used 
  
 
-### Aggregate Functions
+#### Aggregate Functions
 - `MIN(column)`
 - `MAX(column)`
 - `COUNT(column)`, `COUNT(DISTINCT column)` 
@@ -625,7 +625,7 @@ Group by multiple columns:
 - **Aggregate functions are not allowed in the WHERE clause**
 
 
-### Set Operations
+#### Set Operations
 - the number of columns must be equal, compatible types
 - set oprations automatically remove duplicate
 - use `ALL` to keep duplicate
@@ -686,8 +686,8 @@ WHERE c.customer_id=o.customer_id
 </tr>
 </table>
   
-- Both <code>customer_id</code> columns will remain in the result
-- use <code>USING</code> when the column names(and type) match
+- Both `customer_id` columns will remain in the result
+- use `USING` when the column names(and type) match
 
 #### Natural Join
 `NATURAL JOIN`
@@ -711,40 +711,44 @@ FROM customers c NATURAL JOIN orders o
 ## Views
 
 Format:
-```
+```sql
 CREATE VIEW <view_name> as <query expression>
 ```
 Example:
 
-```
+```sql
 CREATE VIEW **department_total_salary(name, total_salary)** AS
   SELECT dept_name, sum(salary)
   FROM instructor
   GROUP BY dept_name
 ```
 Equivalent:
-```
+```sql
 CREATE VIEW department_total_salary AS
   SELECT dept_name AS name, sum(salary) AS total_salary 
   FROM instructor
   GROUP BY name
 ```
 Using views: (like a table)
-```
+```sql
 SELECT * FROM department_total_salary
 ```
 Delete views:
-```
+```sql
 DROP VIEW (IF EXIST) <view_name>
 ```
 
 
 ## SQL Commands Summary
+
+
+
+
 <table>
 <tr>
   <td>
 
-  ```
+  ```sql
   SELECT DISTINCT 
   SELECT ALL
   SELECT TOP 3
@@ -757,7 +761,7 @@ DROP VIEW (IF EXIST) <view_name>
 <tr>
   <td>
 
-  ```
+  ```sql
   r1 JOIN r2 USING(col)
   r1 JOIN r2 ON r1.col=r2.col
   ```
@@ -810,4 +814,9 @@ DROP VIEW (IF EXIST) <view_name>
 
 ---
 
-`WITH var_name AS (subquery)`
+```sql
+WITH var_name AS (subquery)
+```
+![alt text](<TEST FOR EMPTY RELATIONS.png>)
+![alt text](<USE OF NOT EXISTS CLAUSE.png>)
+![alt text](<TEST FOR ABSENCE OF DUPLICATE.png>)
