@@ -100,8 +100,29 @@ f(φ): G = empty graph
 ![3SAT_SubsetSum_pf](3SAT_SubsetSum_pf.png)
 
 ##### Other:
-**VC ≤ DomSet**  
+**VC ≤ DomSet** (550)
+DomSet = subsetS of V s,t for all v∈V, v∈V or v's neighbor ∈ V
+```
+f(G, k):
+  (G, k) = (G', k')
+  G = G and add a parallel red vertex and 2 edges next to every edge
+  k' = k
+  return (G', k')
+```
+
 **HamPath ≤ HamCycle**
+
+**IS ≤ VC**
+
+**VC ≤ SetCover**
+SetCover = a collection of subsets {S1, .. Sn} of U, whose Union is U
+VC of size ≤ k => SetCover of size ≤ k?
+```
+f(G, k):
+  Set U = E
+  for each vertex i in V:
+    subset S_i = all edges incident to i
+```
 
 
 
