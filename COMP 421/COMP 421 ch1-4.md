@@ -7,9 +7,10 @@
 - [Chapter 2](#chapter-2)
   - [Keys](#keys)
   - [Relational Algebra](#relational-algebra)
+      - [Select $\\sigma$](#select-sigma)
       - [Project $\\Pi$](#project-pi)
       - [Cartesian-product $\\times$](#cartesian-product-times)
-      - [Join $\\Join$](#join-join)
+      - [Join $Join$](#join-join)
       - [Union $\\cup$](#union-cup)
       - [Intersection $\\cap$](#intersection-cap)
       - [Set-difference $-$](#set-difference--)
@@ -156,7 +157,7 @@ Key - a principal means of identifying a tuple in a relation
 
 ## Relational Algebra
 
-####Select $\sigma$
+#### Select $\sigma$
 
 <table>
 <tr>
@@ -220,7 +221,7 @@ r1 CROSS JOIN r2
 </table>
 
 
-#### Join $\Join$
+#### Join $Join$
 - a derivative of Cartesian product
 
 
@@ -352,7 +353,7 @@ CREATE TABLE Student(
   name varchar(25) NOT NULL ,
   age int,
   PRIMARY KEY (id),
-  FOREIGN KEY (id) REFERENCE Takes(student_id)
+  FOREIGN KEY (id) REFERENCES Takes(student_id)
   CHECK (age>=18)
   ...)
 ```
