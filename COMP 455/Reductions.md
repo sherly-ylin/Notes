@@ -61,7 +61,7 @@ f(x):
 (G,s,t) in HamPath - n vertices, m edges
 (G',s',t') in UHamPath - 3(n-2)+2 vertices, 2(n-2)+m edges
 
-![HamPath ≤ UHamPath](HamPath_UHamPath.png)
+![HamPath ≤ UHamPath](./assets/HamPath_UHamPath.png)
 
 **SAT ≤ 3SAT**
 SAT = {⟨φ⟩ | φ is a satisfiable Boolean formula}
@@ -92,12 +92,12 @@ f(φ): G = empty graph
     add edge b/t u and correponding literal from O-O pair 
   return (G, m+2l) # # vars + # clauses
 ```
-![3SAT_VC](3SAT_VC.png)
-![3SAT_VC_pf](3SAT_VC_pf.png)
+![3SAT_VC](./assets/3SAT_VC.png)
+![3SAT_VC_pf](./assets/3SAT_VC_pf.png)
 **3SAT ≤ SubsetSum**
-![3SAT_SubsetSum](3SAT_SubsetSum.png)
+![3SAT_SubsetSum](./assets/3SAT_SubsetSum.png)
 
-![3SAT_SubsetSum_pf](3SAT_SubsetSum_pf.png)
+![3SAT_SubsetSum_pf](./assets/3SAT_SubsetSum_pf.png)
 
 ##### Other:
 **VC ≤ DomSet** (550)

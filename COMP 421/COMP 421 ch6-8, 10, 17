@@ -24,6 +24,13 @@
       - [Third Normal Form (3NF)](#third-normal-form-3nf)
       - [BCNF vs 3NF](#bcnf-vs-3nf)
 - [17. Transactions](#17-transactions)
+  - [ACID Properties](#acid-properties)
+    - [Committing to Storage](#committing-to-storage)
+    - [Transaction States](#transaction-states)
+    - [Concurrent Transactions](#concurrent-transactions)
+  - [Transaction Schedules](#transaction-schedules)
+    - [Serializability](#serializability)
+      - [Precedence Graphs](#precedence-graphs)
 ## 6. DB Design: Entity-Relationship Model
 
 ### Designing Schemas
@@ -366,3 +373,156 @@ Suppose students can have multiple advisors, but only one per department.
 ## 17. Transactions
 
 
+A transaction is a unit of program execution, can be a sequence of instructions (SQL commands or code accessing the database)
+
+A transaction must end in one of two ways:
+- it completes entirely and ends with a **commit**, saving all the
+changes it made; or,
+- it fails to complete and ends with a **rollback**, undoing all the
+changes it made.
+
+
+### ACID Properties
+- **A**tomicity (all or nothing)
+- **C**onsistency (an isolated transaction preserves database consistency)
+- **I**solation (a transaction is unaware of other transactions on the system)
+- **D**urability (a committed transaction persists through system failures)
+
+**Atomicity**
+- "all or nothing"
+- a transaction must finish entirely or not at all
+- error-tolerant 
+
+**Isolation**
+- enable running **concurrent/parallel transactions** of multiple users without interfering each other
+  
+**Durability**
+- a committed transaction **persists through future system failures**
+- 
+**Consistency**
+- a transaction in isolation should **preserve any constraints** on the database
+- A transaction might break a constraint temporarily, but by the time it commits the constraints should be restored.
+
+
+#### Committing to Storage
+Two major storage categories:
+- **Volatile storage** like the cache or main memory - fast, but stored data is lost when power goes out, and
+- **Non-volatile storage** like magnetic disks or solid-state drives - slower, but they keep data even if power is lost.
+- A third: **Stable storage**, which can never lose data.
+- Stable storage is useful for durability (so our changes persist) and atomicity (so we can write changes to a log file before making them).
+
+**Aborted Transactions**
+- Anything that keeps a transaction from executing causes us to **abort** the transaction - forcing us to undo any changes we made.
+- keep a **log file** where we record the changes we make - once the changes are written to the file, we can start modifying the database itself.
+- Once a transaction is committed, we can’t abort it - we can only start a second transaction that modifies the database to undo the changes.
+
+#### Transaction States
+- **Active** -- the initial state; the transaction stays in this state while it is executing
+- **Partially committed** -- after the final statement has been executed, no onger executing, but can still be rolled back.
+- **Commited** -- after successful completion. If we can write enough out to disk to recreate the changes if there’s a system failure.
+- **Failed** --  when normal execution can no longer proceed. If a transaction fails before committing, any changes must be rolled back.
+- **Aborted** -- once the transaction has been rolled back and those changes are undone. (could be either restarted or abandoned).
+- 
+
+**External Writes**
+- We want to avoid any situations where users see confirmation of a change and then the change gets erased by a crash.
+- We prefer to hold off on announcing any changes until the transaction commits - then, even if we crash, we can make sure the changes are saved.
+
+#### Concurrent Transactions
+- Multiple transactions are allowed to run concurrently in the system. Advantages are:
+- Increased processor and disk utilization, leading to better transaction throughput
+  - one transaction can be using the CPU while another is reading from or writing to the disk
+- Reduced average response time for transactions: short transactions need not wait behind long ones.
+- 
+**Isolation Difficulties**
+- **Concurrency control system** manages the difficult task of determining what transactions can run at the same time, and how.
+- mechanisms to achieve isolation -- control the interaction among the concurrent transactions in order to prevent them from destroying the consistency of the database
+- When multiple transactions access the same data at once, the order of their operations could result in interference with each other (and break database consistency).
+
+### Transaction Schedules
+
+- **Schedules** consist of
+  - All the operations in those transactions,
+  - in the order they appear in their individual transaction,
+  - each one (optionally) ending with a commit or an abort.
+- Multiple transactions can be interleaved so their operations can run in parallel.
+
+- **Serial schedule**
+- first T1, then T2.
+
+<table>
+<tr>
+<td>
+
+![Schedule_T1-T2](./assets/Schedule_T1-T2.png)
+</td>
+<td>
+
+![Schedule_T2-T1](./assets/Schedule_T2-T1.png)
+</td>
+</tr>
+
+<tr>
+<td>
+Equivalent non serial,  the sum A + B is preserved
+
+![Schedule_nonserial](./assets/Schedule_nonserial.png)
+</td>
+<td>
+Not equivalent, doesn't preserve the value of (A +
+B )
+
+![Schedule_notequivalent](./assets/Schedule_notequivalent.png)
+</td>
+</tr>
+</table>
+
+
+#### Serializability
+- Basic Assumption – Each transaction should preserves database consistency.
+- Serial execution of a set of transactions preserves database consistency.
+- A (possibly concurrent) schedule is **serializable** if it is equivalent to a serial schedule.
+
+**Serializable Schedules**
+- How do we determine whether a schedule can be serialized:
+- The only operations that matter on an **item X** are **read(X)** and **write(X)**.
+- If I have two consecutive instructions from two different transactions, can I safely swap the order of...
+  - read(X) and read(X)?
+    - Yes; they’ll both read the same thing.
+  - read(X) and write(X)?
+    - No; the write could affect the value the read gets.
+  - write(X) and read(X)?
+    - No; for the same reason.
+  - write(X) and write(X)?
+    - No; one will overwrite the other.
+
+**Conflict Serialization**
+- Two operations conflict if they’re from **different transactions**, operate on the **same item**, and one is a **write** operation.
+- **Conflict equivalent**: Given two consecutive instructions from different transactions, as long as they don’t conflict, we can **swap their ordering** and get a schedule that produces the same output as the original. 
+- if I can turn a schedule into a serial schedule by doing this, that schedule is **conflict serializable**.
+
+##### Precedence Graphs
+- To test which schedules are serializable, we can create a **precedence graph** 
+- a directed graph for finding schedule conflicts.
+- Each vertex of the graph is a transaction. We draw an edge from Ti to Tj wherever:
+  -  Ti writes X before Tj reads X.
+  -  Ti reads X before Tj writes X.
+  -  Ti writes X before Tj writes X.
+-  If there’s a cycle in the graph, it isn’t conflict serializable.
+
+**Cascading Failures/Rollbacks**
+- If two transactions Ti and Tj are running concurrently and Ti fails:
+  - If Ti wrote something that was read by Tj, that write would be rolled back and undone with Ti.
+  - To keep data consistent, Tj has to abort as well
+  - And if something else ran at the same time as Tj, that one also has to abort, and so on
+- Can lead to the undoing of a significant amount of work
+
+**Recoverable Schedules**
+- If Tj reads something that was written by Ti, Ti commits before Tj does
+- Then if Ti fails, we can safely abort Tj.
+
+**Cascadeless Schedules**
+- cascading rollbacks cannot occur;
+- if Tj reads something written by Ti , Ti commits before Tj reads that data.
+- This ensures Ti either commits (and Tj can read the modified data safely) or aborts (in which case Tj reads the unmodified data).
+- Any cascadeless schedule is also a recoverable schedule
